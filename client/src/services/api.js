@@ -76,3 +76,26 @@ export async function executeOptimizer(payload) {
   return await res.json();
 }
 
+export async function fetchApiKeysConfig() {
+  const res = await fetch(`${BASE_URL}/api/config/keys`, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error('Failed to load API keys status');
+  }
+  return await res.json();
+}
+
+export async function saveAlphaVantageKey(alphaVantageKey) {
+  const res = await fetch(`${BASE_URL}/api/config/keys`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ alphaVantageKey })
+  });
+
+  const data = await res.json();
+  if (!res.ok || data.success === false) {
+    throw new Error(data.message || 'Failed to connect API key');
+  }
+  return data;
+}
+
+

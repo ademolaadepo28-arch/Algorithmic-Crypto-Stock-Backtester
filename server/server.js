@@ -5,6 +5,7 @@ import assetsRouter from './src/routes/assets.js';
 import quotesRouter from './src/routes/quotes.js';
 import backtestRouter from './src/routes/backtest.js';
 import optimizeRouter from './src/routes/optimize.js';
+import configRouter from './src/routes/config.js';
 import healthRouter from './src/routes/health.js';
 
 dotenv.config();
@@ -37,6 +38,7 @@ app.use('/api/assets', assetsRouter);
 app.use('/api/quotes', quotesRouter);
 app.use('/api/backtest', backtestRouter);
 app.use('/api/optimize', optimizeRouter);
+app.use('/api/config', configRouter);
 app.use('/api/health', healthRouter);
 
 // Root / Warmup probe endpoint

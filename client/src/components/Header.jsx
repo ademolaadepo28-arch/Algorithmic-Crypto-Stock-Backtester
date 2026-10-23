@@ -1,10 +1,11 @@
 import React from 'react';
-import { Activity, Zap, Server, Database, ShieldAlert, Cpu } from 'lucide-react';
+import { Activity, Zap, Server, Database, ShieldAlert, Cpu, Key } from 'lucide-react';
 
-export default function Header({ health, lastReplayTime, isCacheHit }) {
+export default function Header({ health, lastReplayTime, isCacheHit, keyConfig, onOpenApiKeyModal }) {
   const isConnected = health && health.status === 'ok';
   const redisConnected = health?.redis?.connected;
   const backendType = health?.redis?.backendType || 'In-Memory Cache';
+  const isKeyConfigured = keyConfig?.alphaVantage?.configured;
 
   return (
     <header className="glass-panel px-6 py-4 mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-slate-800">
@@ -28,6 +29,19 @@ export default function Header({ health, lastReplayTime, isCacheHit }) {
       </div>
 
       <div className="flex items-center flex-wrap gap-2.5 text-xs font-mono">
+        {/* Connect API Key Button */}
+        <button
+          onClick={onOpenApiKeyModal}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/60 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/40 text-slate-300 transition-all cursor-pointer"
+          title="Connect or configure Alpha Vantage & CoinGecko API keys"
+        >
+          <Key className="w-3.5 h-3.5 text-amber-400" />
+          <span>API Key:</span>
+          <span className={`font-bold ${isKeyConfigured ? 'text-emerald-400' : 'text-amber-400'}`}>
+            {isKeyConfigured ? 'Active' : 'Connect'}
+          </span>
+        </button>
+
         {/* Sub-80ms Replay Badge */}
         <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all ${
           isCacheHit
@@ -64,3 +78,4 @@ export default function Header({ health, lastReplayTime, isCacheHit }) {
     </header>
   );
 }
+

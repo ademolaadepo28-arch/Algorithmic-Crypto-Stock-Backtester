@@ -7,7 +7,8 @@ import EquityChart from './components/EquityChart';
 import OptimizerGrid from './components/OptimizerGrid';
 import TradesTable from './components/TradesTable';
 import WarmupModal from './components/WarmupModal';
-import { fetchHealth, fetchAssets, executeBacktest } from './services/api';
+import ApiKeyModal from './components/ApiKeyModal';
+import { fetchHealth, fetchAssets, executeBacktest, fetchApiKeysConfig } from './services/api';
 import { AlertCircle, Terminal, Cpu } from 'lucide-react';
 
 export default function App() {
@@ -46,6 +47,17 @@ export default function App() {
   const [lastReplayTime, setLastReplayTime] = useState(null);
   const [isCacheHit, setIsCacheHit] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [keyConfig, setKeyConfig] = useState(null);
+  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
+
+  const loadKeyConfig = useCallback(async () => {
+    try {
+      const data = await fetchApiKeysConfig();
+      setKeyConfig(data);
+    } catch (err) {
+      console.warn('Could not fetch API keys config:', err.message);
+    }
+  }, []);
 
   // Poll server health & warmup detection
   const checkHealth = useCallback(async () => {
@@ -67,6 +79,7 @@ export default function App() {
   useEffect(() => {
     async function initialize() {
       const isLive = await checkHealth();
+      loadKeyConfig();
       try {
         const assets = await fetchAssets('all');
         if (assets && assets.length > 0) {
@@ -115,6 +128,16 @@ export default function App() {
         health={health}
         lastReplayTime={lastReplayTime}
         isCacheHit={isCacheHit}
+        keyConfig={keyConfig}
+        onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
+      />
+
+      {/* API Key Connection Modal */}
+      <ApiKeyModal
+        isOpen={isApiKeyModalOpen}
+        onClose={() => setIsApiKeyModalOpen(false)}
+        keyConfig={keyConfig}
+        onKeyUpdated={loadKeyConfig}
       />
 
       {/* Render Cold-Start Graceful Fallback Modal */}
