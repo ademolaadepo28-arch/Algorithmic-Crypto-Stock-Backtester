@@ -58,3 +58,21 @@ export async function executeBacktest(payload) {
     serverDuration: serverHeaderTime || `${data.replayTimeMs}ms`
   };
 }
+
+export async function executeOptimizer(payload) {
+  const res = await fetch(`${BASE_URL}/api/optimize`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    const errorJson = await res.json().catch(() => ({}));
+    throw new Error(errorJson.message || `Optimizer failed: ${res.status} ${res.statusText}`);
+  }
+
+  return await res.json();
+}
+

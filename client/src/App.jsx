@@ -4,6 +4,7 @@ import StrategyControls from './components/StrategyControls';
 import MetricsHUD from './components/MetricsHUD';
 import PriceChart from './components/PriceChart';
 import EquityChart from './components/EquityChart';
+import OptimizerGrid from './components/OptimizerGrid';
 import TradesTable from './components/TradesTable';
 import WarmupModal from './components/WarmupModal';
 import { fetchHealth, fetchAssets, executeBacktest } from './services/api';
@@ -152,6 +153,18 @@ export default function App() {
       <MetricsHUD
         metrics={backtestResult?.metrics}
         symbol={config.symbol}
+      />
+
+      {/* Quantitative Parameter Grid Search & Sharpe Heatmap */}
+      <OptimizerGrid
+        config={config}
+        onApplyParams={(fast, slow) => {
+          setConfig(prev => ({
+            ...prev,
+            params: { ...prev.params, fast, slow }
+          }));
+        }}
+        onRunSimulation={handleRunBacktest}
       />
 
       {/* Synchronized Panel 1: Asset Price Overlay with Moving Averages & Buy/Sell Flags */}
