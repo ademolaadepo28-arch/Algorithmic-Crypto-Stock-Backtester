@@ -72,8 +72,8 @@ export default function EquityChart({ data, initialCapital, maxDrawdown }) {
           </div>
         </div>
 
-        <div className="h-64 w-full">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-64 w-full" style={{ minHeight: '260px' }}>
+          <ResponsiveContainer width="100%" height={260}>
             <ComposedChart data={data} syncId="backtestCharts" margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="equityGradient" x1="0" y1="0" x2="0" y2="1">
@@ -145,8 +145,8 @@ export default function EquityChart({ data, initialCapital, maxDrawdown }) {
           </span>
         </div>
 
-        <div className="h-64 w-full">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-64 w-full" style={{ minHeight: '260px' }}>
+          <ResponsiveContainer width="100%" height={260}>
             <ComposedChart data={data} syncId="backtestCharts" margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
               <defs>
                 <linearGradient id="drawdownGradient" x1="0" y1="0" x2="0" y2="1">

@@ -115,8 +115,8 @@ export default function PriceChart({ data, trades, symbol, fastPeriod, slowPerio
         </div>
       </div>
 
-      <div className="h-80 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="h-80 w-full" style={{ minHeight: '320px' }}>
+        <ResponsiveContainer width="100%" height={320}>
           <ComposedChart data={data} syncId="backtestCharts" margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" opacity={0.6} />
             <XAxis
