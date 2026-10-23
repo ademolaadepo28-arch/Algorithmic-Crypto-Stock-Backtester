@@ -1,0 +1,30 @@
+services:
+  # Express Backend Web Service
+  - type: web
+    name: algorithmic-backtester-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: algorithmic-backtester-redis
+          property: connectionString
+      - key: ALPHA_VANTAGE_KEY
+        sync: false
+
+  # Render In-Memory Redis Cache
+  - type: redis
+    name: algorithmic-backtester-redis
+    plan: free
+    region: oregon
+    maxmemoryPolicy: volatile-lru
+    ipAllowList: [] # internal only
